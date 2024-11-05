@@ -10,24 +10,19 @@ It is encouraged to use [legubiao/ros2d-quasar](https://github.com/legubiao/ros2
 
 ## Installation
 
-install rosbridge-server
-
-```
-sudo apt-get install ros-noetic-rosbridge-server
-```
-
-pip install (for conda user)
-```bash
-pip install twisted pyOpenSSL autobahn service_identity tornado pymongo pillow
-```
-
 clone the repository
 
 ```shell
 cd ~/catkin_ws/src
 git clone https://github.com/legubiao/AMR-Remote-Control-Toolkit
 cd ..
+rosdep install --from-paths src --ignore-src -r -y
 catkin_make
+```
+
+Install Python-is-Python3
+```bash
+sudo apt-get install -y python-is-python3
 ```
 
 ## Try with Turtlebot3 Simulation
@@ -48,7 +43,7 @@ Install TurtleBot3 Simulation Package
 
 ```shell
 cd ~/catkin_ws/src
-git clone -b kinetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
+git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
 cd ~/catkin_ws && catkin_make
 ```
 

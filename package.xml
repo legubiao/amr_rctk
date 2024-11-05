@@ -54,6 +54,8 @@
   <depend>tf</depend>
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
+  <depend>gmapping</depend>
+  <depend>dwa_local_planner</depend>
   <depend>rosbridge_suite</depend>
 
 
