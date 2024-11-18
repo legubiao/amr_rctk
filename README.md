@@ -10,70 +10,53 @@ It is encouraged to use [legubiao/ros2d-quasar](https://github.com/legubiao/ros2
 
 [中文说明](README_CN.md)
 
-## Installation
+## 1. Installation
 
-install rosbridge-server
+* clone the repository
+  ```shell
+  cd ~/ros2_ws/src
+  git https://github.com/legubiao/amr_rctk
+  ```
 
+* rosdep
+  ```bash
+  cd ~/ros2_ws
+  rosdep install --from-paths src --ignore-src -r -y
+  ```
+
+
+* python node 
+  ```bash
+  chmod +x scripts/mapping_node.py
+  ```
+
+* build
+
+  ```bash
+  cd ~/ros2_ws
+  colcon build --packages-up-to amr_rctk  --symlink-install
+  ```
+
+## 2. Simulations
+
+### 2.1 Turtlebot3 Webots Simulation
+
+Tested on Ubuntu 22.04 ROS2 Humble.
+> **Warning:** Webots still under development for ROS2 Jazzy, can not run properly (2024.11.18)
+* Install [Webots](https://github.com/cyberbotics/webots), just download the stable release `.deb` then install.
+* Install Webots-ros2
+  ```bash
+  sudo apt-get install ros-humble-webots-ros2
+  ```
+* Test the turtlebot3 simulation
+  ```bash
+  ros2 launch webots_ros2_turtlebot robot_launch.py
+  ```
+![webots](.images/webots.png)
+
+
+* Launch the amr_rctk
+```bash
+source ~/ros2_ws/install/setup.bash
+ros2 launch amr_rctk turtlebot.launch.py
 ```
-sudo apt-get install ros-humble-rosbridge-server
-```
-
-clone the repository
-
-```shell
-cd ~/ros2_ws/src
-git clone https://github.com/legubiao/AMR-Remote-Control-Toolkit
-cd AMR-Remote-Control-Toolkit
-git checkout humble
-cd ../..
-colcon build
-```
-
-## Try with Turtlebot3 Simulation
-
-Install TurtleBot3 Packages
-
-```shell
-sudo apt install ros-noetic-dynamixel-sdk ros-noetic-turtlebot3-msgs ros-noetic-turtlebot3
-```
-
-Install gmapping and dwa local planner
-
-```shell
-sudo apt-get install ros-noetic-gmapping ros-noetic-dwa-local-planner
-```
-
-Install TurtleBot3 Simulation Package
-
-```shell
-cd ~/catkin_ws/src
-git clone -b kinetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
-cd ~/catkin_ws && catkin_make
-```
-
-Set Default TurtleBot3 Model
-
-```shell
-echo "export TURTLEBOT3_MODEL=burger" >> ~/.bashrc
-source ~/.bashrc
-```
-
-Modified the default map folder in `launch/turtlebot.launch`
-
-![image-20240314165341063](assets/image-20240314165341063.png)
-
-Launch the demo
-
-```shell
-roslaunch amr_rctk turtlebot.launch
-```
-
-You can launch gmapping by send to `map_command` topic
-
-![image-20240314170344982](assets/image-20240314170344982.png)
-
-The slam node will be started and rviz will popup
-
-![image-20240314170646636](assets/image-20240314170646636.png)
-
-In order to save map, just send `save YOUR_MAP_NAME` to the `map_command` topic
