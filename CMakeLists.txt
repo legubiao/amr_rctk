@@ -88,8 +88,6 @@ install(PROGRAMS
 install(DIRECTORY
         launch
         config
-        param
-        rviz
         DESTINATION share/${PROJECT_NAME}/
 )
 

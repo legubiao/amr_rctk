@@ -30,7 +30,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     prefix = get_package_share_directory('amr_rctk')
     cartographer_config_dir = LaunchConfiguration('cartographer_config_dir', default=os.path.join(
-                                                  prefix, 'config'))
+        prefix, 'config', 'cartographer'))
     configuration_basename = LaunchConfiguration('configuration_basename',
                                                  default='cartographer.lua')
 
@@ -38,7 +38,7 @@ def generate_launch_description():
     publish_period_sec = LaunchConfiguration('publish_period_sec', default='1.0')
 
     rviz_config_dir = os.path.join(get_package_share_directory('amr_rctk'),
-                                   'rviz', 'cartographer.rviz')
+                                   'config', 'cartographer', 'cartographer.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -64,7 +64,6 @@ def generate_launch_description():
                        '-configuration_basename', configuration_basename],
             remappings=[('/points2', '/scan/point_cloud')]
         ),
-                    
 
         DeclareLaunchArgument(
             'resolution',
@@ -90,5 +89,5 @@ def generate_launch_description():
             name='rviz2',
             arguments=['-d', rviz_config_dir],
             parameters=[{'use_sim_time': use_sim_time}]
-            ),
+        ),
     ])
