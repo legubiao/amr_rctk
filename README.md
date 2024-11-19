@@ -15,7 +15,7 @@ It is encouraged to use [legubiao/ros2d-quasar](https://github.com/legubiao/ros2
 * clone the repository
   ```shell
   cd ~/ros2_ws/src
-  git https://github.com/legubiao/amr_rctk
+  git clone https://github.com/legubiao/amr_rctk
   ```
 
 * rosdep
