@@ -49,6 +49,7 @@ int main(int argc, char** argv){
 
 
     bool print_error = node->declare_parameter<bool>("print_error", false);
+    auto source_frame = node->declare_parameter<std::string>("source_frame", "base_link");
 
     std::deque<geometry_msgs::msg::PoseStamped> poses;
     nav_msgs::msg::Path path_msg;
@@ -59,7 +60,7 @@ int main(int argc, char** argv){
     while (rclcpp::ok()){
         try{
             geometry_msgs::msg::TransformStamped transformStamped;
-            transformStamped = tfBuffer.lookupTransform("map", "base_link", tf2::TimePointZero);
+            transformStamped = tfBuffer.lookupTransform("map", source_frame, tf2::TimePointZero);
             geometry_msgs::msg::PoseStamped pose_msg;
             pose_msg.header.stamp = node->now();
             pose_msg.header.frame_id = "map";
@@ -77,7 +78,7 @@ int main(int argc, char** argv){
                 if (poses.size() > 100){
                     poses.pop_front();
                 }
-                path_msg.poses = std::vector<geometry_msgs::msg::PoseStamped>(poses.begin(), poses.end());
+                path_msg.poses = std::vector(poses.begin(), poses.end());
                 path_msg.header.stamp = node->now();
                 path_msg.header.frame_id = "map";
                 path_pub->publish(path_msg);
