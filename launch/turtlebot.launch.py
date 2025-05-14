@@ -40,10 +40,10 @@ def generate_launch_description():
             launch_arguments={'use_sim_time': 'true'}.items(),
         ),
 
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([webots_ros2_turtlebot_dir, '/launch/robot_launch.py']),
-            launch_arguments={'use_sim_time': 'true'}.items(),
-        ),
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource([webots_ros2_turtlebot_dir, '/launch/robot_launch.py']),
+        #     launch_arguments={'use_sim_time': 'true'}.items(),
+        # ),
 
         Node(
             package='amr_rctk',
