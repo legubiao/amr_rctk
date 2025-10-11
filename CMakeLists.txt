@@ -70,6 +70,14 @@ ament_target_dependencies(path_tracker_pid
         tf2_geometry_msgs
 )
 
+add_executable(patrol_node src/patrol_node.cpp)
+ament_target_dependencies(patrol_node
+        rclcpp
+        nav_msgs
+        geometry_msgs
+        tf2_geometry_msgs
+)
+
 rosidl_get_typesupport_target(cpp_typesupport_library ${PROJECT_NAME} "rosidl_typesupport_cpp")
 target_link_libraries(pose_publisher ${cpp_typesupport_library})
 target_link_libraries(path_tracker_pid ${cpp_typesupport_library})
@@ -78,6 +86,7 @@ install(TARGETS
         pose_publisher
         path_publisher
         path_tracker_pid
+        patrol_node
         DESTINATION lib/${PROJECT_NAME})
 
 install(PROGRAMS

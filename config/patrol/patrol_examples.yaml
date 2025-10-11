@@ -1,0 +1,124 @@
+# 巡逻节点配置示例
+# 包含多种使用场景的示例配置
+
+# ========== 示例1: 正方形巡逻（带姿态） ==========
+# 机器人沿正方形路径巡逻，每个角都面向特定方向
+example_1_square_with_orientation:
+  ros__parameters:
+    waypoints_x: [0.0, 2.0, 2.0, 0.0]
+    waypoints_y: [0.0, 0.0, 2.0, 2.0]
+    waypoints_yaw: [0.0, 1.5708, 3.1416, -1.5708]  # 东、北、西、南
+    repeat_patrol: true
+    goal_tolerance: 0.2
+    angular_tolerance: 0.1
+    max_linear_vel: 0.5
+    max_angular_vel: 1.0
+
+# ========== 示例2: 简单直线巡逻（无姿态控制） ==========
+# 机器人在两点间来回巡逻，不关心朝向
+example_2_simple_line:
+  ros__parameters:
+    waypoints_x: [0.0, 3.0]
+    waypoints_y: [0.0, 0.0]
+    # waypoints_yaw 未设置，默认为0
+    repeat_patrol: true
+    goal_tolerance: 0.15
+    angular_tolerance: 0.1
+    max_linear_vel: 0.6
+    max_angular_vel: 1.2
+
+# ========== 示例3: 监控巡逻（精确姿态） ==========
+# 模拟安保机器人，到达各监控点并面向监控区域
+example_3_security_patrol:
+  ros__parameters:
+    waypoints_x: [1.0, 4.0, 4.0, 1.0, 2.5]
+    waypoints_y: [1.0, 1.0, 4.0, 4.0, 2.5]
+    # 每个点面向房间中心 (2.5, 2.5)
+    waypoints_yaw: [0.785, 2.356, -2.356, -0.785, 0.0]  # 45°, 135°, -135°, -45°, 0°
+    repeat_patrol: true
+    goal_tolerance: 0.1  # 更高精度
+    angular_tolerance: 0.05  # 更精确的角度控制
+    max_linear_vel: 0.3
+    max_angular_vel: 0.8
+    kp_linear: 1.2
+    kp_angular: 2.5
+
+# ========== 示例4: 单次任务执行 ==========
+# 机器人执行一次性任务，到达终点后停止
+example_4_one_time_mission:
+  ros__parameters:
+    waypoints_x: [0.0, 2.0, 4.0, 6.0, 8.0]
+    waypoints_y: [0.0, 1.0, 0.5, 1.5, 0.0]
+    waypoints_yaw: [0.0, 0.524, 0.0, -0.524, 3.1416]  # 最后转身
+    repeat_patrol: false  # 不重复
+    goal_tolerance: 0.2
+    angular_tolerance: 0.15
+    max_linear_vel: 0.4
+    max_angular_vel: 1.0
+
+# ========== 示例5: 检查点巡逻（定点停留） ==========
+# 机器人依次检查多个点位，每个点调整到检查姿态
+example_5_inspection_points:
+  ros__parameters:
+    waypoints_x: [0.5, 2.0, 3.5, 5.0, 6.5, 8.0]
+    waypoints_y: [0.0, 0.5, 0.0, 0.5, 0.0, 0.5]
+    # 交替朝向左右两侧
+    waypoints_yaw: [1.5708, -1.5708, 1.5708, -1.5708, 1.5708, -1.5708]
+    repeat_patrol: true
+    goal_tolerance: 0.15
+    angular_tolerance: 0.08
+    max_linear_vel: 0.35
+    max_angular_vel: 0.9
+
+# ========== 示例6: 慢速精确巡逻 ==========
+# 适用于狭窄空间或需要高精度的场景
+example_6_slow_precise:
+  ros__parameters:
+    waypoints_x: [0.0, 1.0, 1.0, 0.0]
+    waypoints_y: [0.0, 0.0, 1.0, 1.0]
+    waypoints_yaw: [0.0, 1.5708, 3.1416, -1.5708]
+    repeat_patrol: true
+    goal_tolerance: 0.05  # 5cm精度
+    angular_tolerance: 0.03  # ~1.7度
+    max_linear_vel: 0.15  # 慢速
+    max_angular_vel: 0.4
+    kp_linear: 0.8
+    kp_angular: 1.5
+
+# ========== 示例7: 快速大范围巡逻 ==========
+# 适用于空旷场地的快速巡逻
+example_7_fast_wide_area:
+  ros__parameters:
+    waypoints_x: [0.0, 10.0, 10.0, 0.0]
+    waypoints_y: [0.0, 0.0, 10.0, 10.0]
+    waypoints_yaw: [0.0, 1.5708, 3.1416, -1.5708]
+    repeat_patrol: true
+    goal_tolerance: 0.3
+    angular_tolerance: 0.15
+    max_linear_vel: 1.0  # 快速
+    max_angular_vel: 1.5
+    kp_linear: 1.5
+    kp_angular: 3.0
+
+# ========== 使用说明 ==========
+# 1. 选择一个示例场景
+# 2. 将对应的配置复制到 config/patrol/patrol_points.yaml
+# 3. 或者直接使用命令行参数覆盖：
+#    ros2 launch amr_rctk patrol.launch.py config_file:=/path/to/config/patrol/patrol_examples.yaml
+# 4. 在launch文件中使用命名空间指定具体示例：
+#    <node pkg="amr_rctk" exec="patrol_node" name="patrol_node" namespace="example_1_square_with_orientation">
+
+# ========== 角度参考 ==========
+# 弧度 <-> 度数对照表：
+#   0.000   =   0°   (东, +X轴)
+#   0.785   =  45°   (东北)
+#   1.571   =  90°   (北, +Y轴)
+#   2.356   = 135°   (西北)
+#   3.142   = 180°   (西, -X轴)
+#  -2.356   =-135°   (西南)
+#  -1.571   = -90°   (南, -Y轴)
+#  -0.785   = -45°   (东南)
+#
+# Python转换: import math; math.radians(度数) -> 弧度
+# C++转换: #include <cmath>; double rad = deg * M_PI / 180.0;
+
